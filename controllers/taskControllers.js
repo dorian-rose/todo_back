@@ -17,6 +17,32 @@ const getTasks = async (req, res) => {
     }
 };
 
+//retrieve one task by id
+const getTaskById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const task = await Task.findById(id);
+        if (task) {
+            return res.status(200).json({
+                ok: true,
+                msg: "Task retrieved",
+                data: task
+            })
+        } else {
+            return res.status(404).json({
+                ok: false,
+                msg: "Task with this ID doesn't exist"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Error retrieving task"
+        })
+    }
+}
+
+
 //create new task
 const createTask = async (req, res) => {
 
@@ -51,4 +77,4 @@ const createTask = async (req, res) => {
 };
 
 
-module.exports = { getTasks, createTask };
+module.exports = { getTasks, getTaskById, createTask };
