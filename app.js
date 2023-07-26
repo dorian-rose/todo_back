@@ -1,4 +1,5 @@
 const express = require('express');
+
 const app = express();
 
 const cors = require("cors");
@@ -12,15 +13,19 @@ app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+//connect with mongodb
+const { connection } = require("./helpers/dbConect");
+
 //set ejs folders virtually in public
 app.use(express.static(__dirname + "/public"));
 
 
 //configure routers
 //app.use("/user", require("./routers/userRouters"))
-//app.use("/tasks", require("./routers/taskRouters"))
+app.use("/tasks", require("./routers/taskRouters"))
 
-
+//call function connects to db
+connection()
 
 //let app to listen to port 
 app.listen(port, () => {
