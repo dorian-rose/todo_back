@@ -42,6 +42,25 @@ const getTaskById = async (req, res) => {
     }
 }
 
+//retrieve one task by uid
+
+const getTaskByUid = async (req, res) => {
+    const { uid } = req.params;
+    try {
+        const tasks = await Task.find({ uid });
+        return res.status(200).json({
+            ok: true,
+            msg: "Tasks retrieved",
+            data: tasks
+        })
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Error retrieving this user's tasks"
+        });
+    }
+};
+
 
 //create new task
 const createTask = async (req, res) => {
@@ -77,4 +96,4 @@ const createTask = async (req, res) => {
 };
 
 
-module.exports = { getTasks, getTaskById, createTask };
+module.exports = { getTasks, getTaskById, getTaskByUid, createTask };

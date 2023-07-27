@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router();
 const { check } = require("express-validator");
 const { validateInputs } = require("../middleware/validateInputs");
-const { getTasks, getTaskById, createTask } = require("../controllers/taskControllers")
+const { getTasks, getTaskById, getTaskByUid, createTask } = require("../controllers/taskControllers")
 
 router.post("/", [
     check("uid", "The user ID is obligatory").not().isEmpty(),
@@ -14,6 +14,8 @@ router.post("/", [
 
 router.get("/", getTasks)
 
-router.get("/:id", getTaskById)
+router.get("/id/:id", getTaskById)
+
+router.get("/user/:uid", getTaskByUid)
 
 module.exports = router;

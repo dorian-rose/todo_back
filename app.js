@@ -1,4 +1,6 @@
 const express = require('express');
+//connect with mongodb
+const { connection } = require("./helpers/dbConect");
 
 const app = express();
 
@@ -13,8 +15,7 @@ app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-//connect with mongodb
-const { connection } = require("./helpers/dbConect");
+
 
 //set ejs folders virtually in public
 app.use(express.static(__dirname + "/public"));
