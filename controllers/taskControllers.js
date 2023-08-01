@@ -4,15 +4,22 @@ const Task = require("../models/taskModel")
 const getTasks = async (req, res) => {
     try {
         const tasks = await Task.find();
-        return res.status(200).json({
-            ok: true,
-            msg: "Tasks retrieved",
-            data: tasks
-        })
+        if (tasks.length == 0) {
+            return res.status(404).json({
+                ok: false,
+                msg: "No existen tareas"
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                msg: "Tareas encontradas",
+                data: tasks
+            })
+        }
     } catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: "Error retrieving tasks"
+            msg: "Error al buscar tareas"
         });
     }
 };
@@ -25,19 +32,19 @@ const getTaskById = async (req, res) => {
         if (task) {
             return res.status(200).json({
                 ok: true,
-                msg: "Task retrieved",
+                msg: "Tarea encontrada",
                 data: task
             })
         } else {
             return res.status(404).json({
                 ok: false,
-                msg: "Task with this ID doesn't exist"
+                msg: "Tarea con este id no existe"
             })
         }
     } catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: "Error retrieving task"
+            msg: "Error al buscar tarea"
         })
     }
 }
@@ -48,15 +55,22 @@ const getTaskByUid = async (req, res) => {
     const { uid } = req.params;
     try {
         const tasks = await Task.find({ uid });
-        return res.status(200).json({
-            ok: true,
-            msg: "Tasks retrieved",
-            data: tasks
-        })
+        if (tasks.length == 0) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Este usuario no tiene tareas"
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                msg: "Tasks retrieved",
+                data: tasks
+            })
+        }
     } catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: "Error retrieving this user's tasks"
+            msg: "Error al buscar tareas de este usuario"
         });
     }
 };
@@ -66,7 +80,7 @@ const getTaskByUid = async (req, res) => {
 const createTask = async (req, res) => {
 
     const newTaskDetails = new Task(req.body)
-    console.log(newTaskDetails)
+
     const taskExists = await Task.findOne({
         todo: newTaskDetails.todo
     });
@@ -82,7 +96,7 @@ const createTask = async (req, res) => {
             const newTask = await newTaskDetails.save();
             return res.status(201).json({
                 ok: true,
-                msg: "New task created",
+                msg: "Nueva tarea creada",
                 data: newTask,
             });
         }
@@ -96,4 +110,68 @@ const createTask = async (req, res) => {
 };
 
 
-module.exports = { getTasks, getTaskById, getTaskByUid, createTask };
+//update a task
+const updateTask = async (req, res) => {
+    const updatedDetails = new Task(req.body)
+    const id = req.body._id;
+    //check if task exists
+    const taskExists = await Task.findOne({
+        _id: id
+    });
+    try {
+        if (!taskExists) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Tarea con este ID no existe"
+            });
+        } else {
+
+            const updatedTask = await Task.findOneAndUpdate(
+                { _id: id },
+                { $set: updatedDetails },
+                { new: true }
+            );
+            return res.status(201).json({
+                ok: true,
+                msg: "Tarea actualizado",
+                data: updatedTask,
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Error al actualizar tarea"
+        })
+    }
+}
+
+//delete a task
+const deleteTask = async (req, res) => {
+    const id = req.body._id
+    //check if task exists
+    const taskExists = await Task.findOne({
+        _id: id
+    });
+    try {
+        if (taskExists) {
+            await Task.findOneAndDelete(id)
+            return res.status(200).json({
+                ok: true,
+                msg: "Tarea eliminado"
+            })
+        } else {
+            return res.status(404).json({
+                ok: false,
+                msg: "Tarea con este id no existe"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Error al eliminar tarea"
+        })
+    }
+
+}
+
+module.exports = { getTasks, getTaskById, getTaskByUid, createTask, updateTask, deleteTask };
