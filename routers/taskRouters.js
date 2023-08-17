@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router();
 const { check } = require("express-validator");
 const { validateInputs } = require("../middleware/validateInputs");
-const { getTasks, getTaskById, getTaskByUid, createTask, updateTask, deleteTask } = require("../controllers/taskControllers")
+const { getTasks, getTaskById, getTaskByUid, getTaskByDate, createTask, updateTask, deleteTask, getTaskBySearch } = require("../controllers/taskControllers")
 
 router.post("/", [
     check("uid", "The user ID is obligatory").not().isEmpty(),
@@ -18,6 +18,10 @@ router.get("/", getTasks)
 router.get("/id/:id", getTaskById)
 
 router.get("/user/:uid", getTaskByUid)
+
+router.post("/search", getTaskBySearch)
+
+router.post("/date", getTaskByDate)
 
 router.put("/", [
     check("uid", "The user ID is obligatory").not().isEmpty(),
