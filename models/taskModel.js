@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const TaskSchema = new Schema({
     uid: {
-        type: Number,
+        type: String,
         required: true,
     },
     todo: {
@@ -20,6 +20,9 @@ const TaskSchema = new Schema({
     date: {
         type: Date, default: Date.now()
     },
+    taskDate: {
+        type: String
+    }
 
 
 })
