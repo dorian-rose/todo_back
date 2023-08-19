@@ -77,13 +77,13 @@ const getTaskByUid = async (req, res) => {
 
 //retrieve task by search term and uid 
 const getTaskBySearch = async (req, res) => {
-    console.log("here")
+
     const { searchTerm, uid } = req.body;
-    console.log(searchTerm)
+    console.log(uid, searchTerm)
     try {
         const tasks = await Task.find(
             {
-
+                uid,
                 "$or": [
                     { todo: { $regex: searchTerm, $options: 'i' } },
                     { description: { $regex: searchTerm, $options: 'i' } }
