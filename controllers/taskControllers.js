@@ -75,7 +75,7 @@ const getTaskByUid = async (req, res) => {
         if (tasks.length == 0) {
             return res.status(404).json({
                 ok: false,
-                msg: "Este usuario no tiene tareas"
+                msg: "No tienes tareas todavía"
             });
         } else {
             return res.status(200).json({
@@ -153,7 +153,7 @@ const getTaskByDate = async (req, res) => {
         if (tasks.length == 0) {
             return res.status(404).json({
                 ok: false,
-                msg: "No hay tareas en esta fecha"
+                msg: "No tienes tareas en esta fecha"
             });
         } else {
             console.log("date", taskDate)

@@ -29,7 +29,7 @@ Endpoints and documentation for APIs created in this project can be found here: 
 
 ## Code documentation
 
-- Code has been documented using JS Docs. Documentation can be found at: https://dorian-rose.github.io/product-swap-back/index.html
+- Code has been documented using JS Docs. Documentation can be found at: https://dorian-rose.github.io/todo_back/
 
 ## Other
 
